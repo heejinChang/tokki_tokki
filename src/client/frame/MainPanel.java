@@ -14,7 +14,7 @@ import util.UseImageFile;
 @SuppressWarnings("serial")
 public class MainPanel extends JPanel {
 
-  private Image img = UseImageFile.getImage("resources/logoicon1.png");
+  private Image img = UseImageFile.getImage("resources/logoicon.png");
   private Image logoTextImg = UseImageFile.getImage("resources/logotext.png");
 
   private JLabel logoImgLabel;
