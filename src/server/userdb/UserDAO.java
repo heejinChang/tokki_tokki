@@ -17,6 +17,8 @@ public class UserDAO {
   private PreparedStatement pstmt;
 
   public String username = null;
+  String my_email;
+  String friend_email;
 
   /*public void connect() {
 
@@ -126,17 +128,19 @@ public class UserDAO {
 
   public ArrayList<String> friendList() {
 
+
+    //uemail은 나의 email이다.
     String uemail = findUserEmail();
     connect();
     ArrayList<String> friends = new ArrayList<String>();
     String sql =
-        "select u.user_name from user u, friend f where u.user_email = f.friend_friendEmail and f.friend_myEmail = ?";
+        "select * from user u, friend f where u.user_email = f.friend_myEmail and f.friend_myEmail = ?";
     try {
       pstmt = conn.prepareStatement(sql);
       pstmt.setString(1, uemail);
       ResultSet rs = pstmt.executeQuery();
       while (rs.next()) {
-        friends.add(rs.getString("user_name"));
+        friends.add(rs.getString("friend_friendEmail"));
       }
     } catch (SQLException e) {
     }
@@ -160,5 +164,78 @@ public class UserDAO {
     }
     disconnect();
     return uemail;
+  }
+
+  public String[] serach() {
+
+
+    //uemail은 나의 email이다.
+    connect();
+    String[]str = new String[10];
+    String sql = "select user_name from user";
+    int i =0;
+    try {
+      pstmt = conn.prepareStatement(sql);
+      //pstmt.setString(1,"user_name");
+      ResultSet rs = pstmt.executeQuery();
+      while (rs.next()) {
+        str[i] = (rs.getString("user_name"));
+       // System.out.println("str[i] is = " + str[i]);
+        i++;
+      }
+    } catch (SQLException e) {
+    }
+    disconnect();
+    return str;
+  }
+
+
+  public boolean insertFriend(String me, String friend) {
+    connect();
+
+
+    String sql = "select user_email from user where user_name = " + "'" + me + "'";
+    try {
+      pstmt = conn.prepareStatement(sql);
+      ResultSet rs = pstmt.executeQuery();
+      while (rs.next()) {
+        my_email = (rs.getString("user_email"));
+        System.out.println(my_email);
+      }
+    } catch (SQLException e) {
+    }
+    disconnect();
+
+    connect();
+    sql = "select user_email from user where user_name = " + "'" + friend + "'";
+    try {
+      pstmt = conn.prepareStatement(sql);
+      ResultSet rs = pstmt.executeQuery();
+      while (rs.next()) {
+        friend_email = (rs.getString("user_email"));
+        System.out.println(friend_email);
+      }
+    } catch (SQLException e) {
+    }
+
+    disconnect();
+
+    connect();
+    sql = "insert into friend values (" + "'" + my_email +"'" + "," +"'" + friend_email + "'" + ")";
+
+    boolean isInsert = true;
+    try {
+      pstmt = conn.prepareStatement(sql);
+      pstmt.executeUpdate();
+
+    } catch (SQLException e) {
+      isInsert = false;
+      System.out.println(e);
+    }
+
+
+    disconnect();
+    return isInsert;
+
   }
 }

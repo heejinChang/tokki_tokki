@@ -10,7 +10,7 @@ public class CommonPanel extends JPanel {
 
   protected JLabel logoLabel;
 
-  protected Image logoImg = UseImageFile.getImage("resources/label.png");
+  protected Image logoImg = UseImageFile.getImage("resources/img_1.png");
 
   protected CommonPanel() {
 
