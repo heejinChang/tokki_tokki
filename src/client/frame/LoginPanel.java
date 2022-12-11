@@ -36,9 +36,11 @@ public class LoginPanel extends UserInfoPanel {
         formTitleLabel = new JLabel(commonWord.getText());
         formTitleLabel.setFont(new Font("맑은 고딕", Font.BOLD, 14));
         formTitleLabel.setBounds(30, y_value, 200, 50);
+        //로그일 할때 이메일 비밀번호알려주는 라벨
         add(formTitleLabel);
         userInfoTextField = new JTextField(10);
         userInfoTextField.setBounds(30, y_value + 45, 325, 30);
+        //이메일 비밀번호 입력하는 텍스트 필드
         add(userInfoTextField);
         y_value += 100;
         if (commonWord.getNum() == CommonWord.PASSWORD.getNum()) {

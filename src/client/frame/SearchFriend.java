@@ -108,7 +108,8 @@ public class SearchFriend extends JFrame implements ActionListener {
             UserDAO ab = new UserDAO();
             System.out.println("my Name :" + name + "friend Name : " + str);
             ab.insertFriend(name, str);
-
+            IndexPanel indexPanel = new IndexPanel();
+            MainPanel.frame.change(indexPanel);
         }
 
     }

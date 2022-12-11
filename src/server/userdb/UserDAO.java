@@ -128,25 +128,25 @@ public class UserDAO {
 
   public ArrayList<String> friendList() {
 
-
-    //uemail은 나의 email이다.
     String uemail = findUserEmail();
     connect();
     ArrayList<String> friends = new ArrayList<String>();
     String sql =
-        "select * from user u, friend f where u.user_email = f.friend_myEmail and f.friend_myEmail = ?";
+            "select u.user_name from user u, friend f where u.user_email = f.friend_friendEmail and f.friend_myEmail = ?";
     try {
       pstmt = conn.prepareStatement(sql);
       pstmt.setString(1, uemail);
       ResultSet rs = pstmt.executeQuery();
       while (rs.next()) {
-        friends.add(rs.getString("friend_friendEmail"));
+        friends.add(rs.getString("user_name"));
       }
     } catch (SQLException e) {
     }
     disconnect();
     return friends;
   }
+
+
 
   private String findUserEmail() {
 

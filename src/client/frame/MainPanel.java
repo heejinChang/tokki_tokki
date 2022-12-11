@@ -14,14 +14,17 @@ import util.UseImageFile;
 @SuppressWarnings("serial")
 public class MainPanel extends JPanel {
 
-  private Image img = UseImageFile.getImage("resources/logoicon.png");
+  private Image img = UseImageFile.getImage("resources/logoicon1.png");
+  private Image logoTextImg = UseImageFile.getImage("resources/logotext.png");
 
   private JLabel logoImgLabel;
+
+  private JLabel logoTextLabel;
 
   private MainPanelButton signUpButton;
 
   private MainPanelButton loginButton;
-  
+
   public static MainFrame frame;
 
   public MainPanel(MainFrame frame) {
@@ -38,8 +41,13 @@ public class MainPanel extends JPanel {
   private void showLogo() {
 
     logoImgLabel = new JLabel(new ImageIcon(img));
-    logoImgLabel.setBounds(95, 90, 200, 200);
+    logoImgLabel.setBounds(30, 450, 300, 300);
     add(logoImgLabel);
+
+    logoTextLabel = new JLabel((new ImageIcon(logoTextImg)));
+    logoTextLabel.setBounds(95, 150, 200, 200);
+    add(logoTextLabel);
+
   }
 
   /*회원가입 버튼*/

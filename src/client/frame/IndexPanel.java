@@ -50,7 +50,6 @@ public class IndexPanel extends CommonPanel {
   }
 
   private void meanMyProfileTitle(String text) {
-
     jLabel = new JLabel(text);
     jLabel.setFont(new Font("맑은 고딕", Font.BOLD, 14));
     jLabel.setBounds(30, 80, 200, 30);

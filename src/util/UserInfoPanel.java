@@ -26,6 +26,8 @@ public abstract class UserInfoPanel extends CommonPanel {
     formTitleLabel = new JLabel(text);
     formTitleLabel.setFont(new Font("맑은 고딕", Font.BOLD, 18));
     formTitleLabel.setBounds(30, 100, 200, 50);
+
+    //formTitleLabel = 로그인
     add(formTitleLabel);
   };
 
