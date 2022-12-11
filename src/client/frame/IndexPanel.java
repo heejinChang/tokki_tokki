@@ -21,7 +21,7 @@ public class IndexPanel extends CommonPanel {
   private JLabel jLabel;
   private JButton btn;
 
-  private Image img = UseImageFile.getImage("resources/woman.png");
+  private Image img = UseImageFile.getImage("C:\\Users\\user\\IdeaProjects\\SimpleTalk\\resources\\cchunsik.png");
 
   public static UserProfileButton userProfileButton;
 
@@ -32,7 +32,6 @@ public class IndexPanel extends CommonPanel {
 
   public IndexPanel() {
     controller = Controller.getInstance();
-    System.out.println("컨트롤러 불러오기 성공");
 
     meanMyProfileTitle(CommonWord.MYPROFILE.getText());
     meanMyProfile();
@@ -45,11 +44,13 @@ public class IndexPanel extends CommonPanel {
     //친구 목록 보여주기
     showFriendList();
 
+    meanApiTitle(CommonWord.API.getText());
+    meanApi(); // 공공데이터 api 실행하기
 
-    
   }
 
   private void meanMyProfileTitle(String text) {
+
     jLabel = new JLabel(text);
     jLabel.setFont(new Font("맑은 고딕", Font.BOLD, 14));
     jLabel.setBounds(30, 80, 200, 30);
@@ -60,7 +61,7 @@ public class IndexPanel extends CommonPanel {
   private void meanMyProfileTitle2(String text) {
 
     btn = new JButton(text);
-    btn.setBackground(new Color(204,204,255));
+    btn.setBackground(new Color(252, 255, 204));
     btn.setFont(new Font("맑은 고딕", Font.BOLD, 14));
     btn.setBounds(30, 50, 200, 30);
     btn.addActionListener(new ActionListener() {
@@ -86,7 +87,7 @@ public class IndexPanel extends CommonPanel {
     userProfileButton.setText(controller.username);
     System.out.println("user name = " + controller.username);
     userProfileButton.setBounds(30, 120, 1000, 80);
-   add(userProfileButton);
+    add(userProfileButton);
     userProfileButton.addActionListener(new ActionListener() {
 
       @Override
@@ -97,11 +98,11 @@ public class IndexPanel extends CommonPanel {
           userProfileButton.setText(userProfileButton.getText() + "       대화 중..");
           String messageType = "text";
           Message message = new Message(controller.username, controller.username + "님이 입장하였습니다.",
-              LocalTime.now(), messageType, controller.username);
+                  LocalTime.now(), messageType, controller.username);
           ChatWindowPanel c = new ChatWindowPanel(imageIcon, controller.username);
           new ChatWindowFrame(c, controller.username);
           chatPanelName.add(c);
-          
+
           Controller controller = Controller.getInstance();
           controller.clientSocket.send(message);
         }
@@ -127,8 +128,28 @@ public class IndexPanel extends CommonPanel {
     JScrollPane scroller = new JScrollPane(jpanel);
     scroller.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
     scroller.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-    scroller.setBounds(30, 300, 350, 300);
+    scroller.setBounds(30, 250, 350, 300);
     add(scroller);
+  }
+
+  // 공공데이터 대기오염정보
+  private void meanApiTitle(String text) {
+    System.out.println("mean Api title :"+text);
+    jLabel = new JLabel(text);
+    jLabel.setFont(new Font("맑은 고딕", Font.BOLD, 15));
+    jLabel.setBounds(30, 600, 200, 20);
+    add(jLabel);
+  }
+
+  // 공공데이터
+  private void meanApi() {
+    String bb = client.API.xmlParsing.dustApi();
+    System.out.println("meanApi" +  bb);
+    jLabel = new JLabel("<html><body><center>" + bb + "<br> <br></center></body></html>");
+    jLabel.setBounds(30, 650, 600, 70);
+
+    add(jLabel);
+    // 문자열 추가 하기
   }
 
   public void paint(Graphics g) {
