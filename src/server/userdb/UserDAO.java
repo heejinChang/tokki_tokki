@@ -130,7 +130,7 @@ public class UserDAO {
     connect();
     ArrayList<String> friends = new ArrayList<String>();
     String sql =
-        "select u.user_name from user u, friend f where u.user_email = f.friend_otherid and f.friend_myid = ?";
+        "select u.user_name from user u, friend f where u.user_email = f.friend_friendEmail and f.friend_myEmail = ?";
     try {
       pstmt = conn.prepareStatement(sql);
       pstmt.setString(1, uemail);
