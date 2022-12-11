@@ -16,7 +16,8 @@ public enum CommonWord {
   SITE_ADDRESS("사이트 주소",10),
   MYPROFILE("내 프로필", 11),
   FRIEND("친구", 12),
-  GOBACK("뒤로가기",13);
+  API("대기오염 정보",13),
+  GOBACK("뒤로가기",14);
 
   private final String text;
 
