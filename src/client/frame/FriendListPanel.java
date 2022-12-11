@@ -7,9 +7,8 @@ import java.awt.event.ActionListener;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Random;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JPanel;
+import javax.swing.*;
+
 import controller.Controller;
 import server.datacommunication.Message;
 import util.ColorSet;
@@ -37,7 +36,7 @@ public class FriendListPanel extends JPanel {
     System.out.println("친구리스트 불러오기 성공");
     int friendNum = friends.size();
     System.out.println("친구수 : " + friendNum);
-    setLayout(new GridLayout(friendNum, 0));
+    setLayout(new GridLayout(friendNum,10));
     for (int index = 0; index < friendNum; index++) {
       Random rand = new Random();
       int randomNum =

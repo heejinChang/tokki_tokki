@@ -10,8 +10,8 @@ public class MainFrame extends JFrame {
 
   public MainFrame() {
 
-    setTitle("KevotingTalk");
-    setBounds(800, 250, 400, 800);
+    setTitle("KakaoTalk");
+    setBounds(800, 20, 400, 800);
     mainPanel = new MainPanel(this);
     getContentPane().add(mainPanel);
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

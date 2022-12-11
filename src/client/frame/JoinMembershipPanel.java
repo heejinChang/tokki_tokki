@@ -41,7 +41,7 @@ public class JoinMembershipPanel extends UserInfoPanel {
         add(formTitleLabel);
 
         userInfoTextField = new JTextField(10);
-        userInfoTextField.setBounds(30, y_value + 45, 325, 30);
+        userInfoTextField.setBounds(30, y_value + 35, 325, 30);
         add(userInfoTextField);
         y_value += 60;
 
