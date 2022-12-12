@@ -1,5 +1,6 @@
 package controller;
 
+import java.awt.*;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
@@ -49,7 +50,7 @@ public class Controller {
 
   }
 
-  public void findUser(ArrayList<JTextField> userInfos) {
+  public void findUser(ArrayList<TextField> userInfos) {
 
    username = userDAO.findUser(userInfos);
    System.out.println(username);

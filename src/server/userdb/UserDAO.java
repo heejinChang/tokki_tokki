@@ -1,5 +1,6 @@
 package server.userdb;
 
+import java.awt.*;
 import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -97,7 +98,7 @@ public class UserDAO {
     
   }
 
-  public String findUser(ArrayList<JTextField> userInfos) {
+  public String findUser(ArrayList<TextField> userInfos) {
 
     connect();
     String sql = "select user_name from user where user_email=? and user_password=?";
