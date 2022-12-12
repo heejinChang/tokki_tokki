@@ -166,21 +166,41 @@ public class UserDAO {
     return uemail;
   }
 
+  /*public String serach(String find_email) {
+    System.out.println("찾고자 하는 이메일 : " + find_email);
+    //uemail은 나의 email이다.
+    connect();
+    String str = null;
+    String sql = "select user_email from user";
+    String uname = null;
+    int i =0;
+    try {
+      pstmt = conn.prepareStatement(sql);
+      pstmt.setString(1,find_email);
+      ResultSet rs = pstmt.executeQuery();
+      while (rs.next()) {
+        str = (rs.getString("user_name"));
+        System.out.println("str[i] is = " + str);
+      }
+    } catch (SQLException e) {
+    }
+    disconnect();
+
+    return str;
+  }*/
   public String[] serach() {
-
-
     //uemail은 나의 email이다.
     connect();
     String[]str = new String[10];
-    String sql = "select user_name from user";
+    String sql = "select user_email from user";
     int i =0;
     try {
       pstmt = conn.prepareStatement(sql);
       //pstmt.setString(1,"user_name");
       ResultSet rs = pstmt.executeQuery();
       while (rs.next()) {
-        str[i] = (rs.getString("user_name"));
-       // System.out.println("str[i] is = " + str[i]);
+        str[i] = (rs.getString("user_email"));
+        // System.out.println("str[i] is = " + str[i]);
         i++;
       }
     } catch (SQLException e) {
@@ -192,7 +212,6 @@ public class UserDAO {
 
   public boolean insertFriend(String me, String friend) {
     connect();
-
 
     String sql = "select user_email from user where user_name = " + "'" + me + "'";
     try {
@@ -237,5 +256,28 @@ public class UserDAO {
     disconnect();
     return isInsert;
 
+  }
+
+  public String getTodayTalk(String username){
+    System.out.println("오늘의 한마디 : " + username);
+    //uemail은 나의 email이다.
+    connect();
+    String str = null;
+    String sql = "select user_todaytalk from user where user_name = ?";
+    String uname = null;
+    int i =0;
+    try {
+      pstmt = conn.prepareStatement(sql);
+      pstmt.setString(1,username);
+      ResultSet rs = pstmt.executeQuery();
+      while (rs.next()) {
+        str = (rs.getString("user_todaytalk"));
+        System.out.println("todaytalk is = " + str);
+      }
+    } catch (SQLException e) {
+    }
+    disconnect();
+
+    return str;
   }
 }

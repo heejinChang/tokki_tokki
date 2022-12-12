@@ -75,4 +75,40 @@ public class Controller {
     return friends;
   }
 
+  public String[] searchUser(){
+    String str[] = userDAO.serach();
+    //System.out.println(str);
+    IndexPanel indexPanel = new IndexPanel();
+
+    if(str.length != 0){
+      return str;
+    }
+    else{
+      System.out.println("검색 실패");
+      /*IndexPanel indexPanel = new IndexPanel();
+      MainPanel.frame.change(indexPanel);*/
+      JOptionPane.showMessageDialog(indexPanel, "친구검색 실패!!!", "친구추가", JOptionPane.WARNING_MESSAGE);
+    }
+    return str;
+  }
+
+  public void insertFriend(String me, String friend){
+    boolean isInsert = userDAO.insertFriend(me, friend);
+    IndexPanel indexPanel = new IndexPanel();
+
+    if (isInsert) {
+      MainPanel.frame.change(indexPanel);
+      System.out.println("친구 추가 성공");
+      JOptionPane.showMessageDialog(indexPanel, "친구추가 성공!!!", "친구추가", JOptionPane.WARNING_MESSAGE);
+    } else {
+      System.out.println("친구 추가 실패");
+      JOptionPane.showMessageDialog(indexPanel, "친구 추가 실패!!!", "친구추가", JOptionPane.WARNING_MESSAGE);
+    }
+  }
+
+  public String today_talk(String user_name){
+    String today_talk = userDAO.getTodayTalk(user_name);
+    return today_talk;
+  }
+
 }

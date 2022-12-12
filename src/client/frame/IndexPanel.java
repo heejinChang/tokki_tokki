@@ -21,7 +21,9 @@ public class IndexPanel extends CommonPanel {
   private JLabel jLabel;
   private JButton btn;
 
-  private Image img = UseImageFile.getImage("C:\\Users\\user\\IdeaProjects\\SimpleTalk\\resources\\cchunsik.png");
+  private JLabel jLabel2;
+
+  private Image img = UseImageFile.getImage("resources/woman.png");
 
   public static UserProfileButton userProfileButton;
 
@@ -88,6 +90,13 @@ public class IndexPanel extends CommonPanel {
     System.out.println("user name = " + controller.username);
     userProfileButton.setBounds(30, 120, 1000, 80);
     add(userProfileButton);
+
+    String today_talk = controller.today_talk(controller.username);
+    jLabel2 = new JLabel(today_talk);
+    jLabel2.setBounds(200, 115,1000, 90);
+    jLabel2.setFont(new Font("맑은 고딕", Font.BOLD, 13));
+    add(jLabel2);
+
     userProfileButton.addActionListener(new ActionListener() {
 
       @Override

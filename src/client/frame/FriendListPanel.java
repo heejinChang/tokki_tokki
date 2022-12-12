@@ -1,7 +1,6 @@
 package client.frame;
 
-import java.awt.GridLayout;
-import java.awt.Image;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalTime;
@@ -23,6 +22,8 @@ public class FriendListPanel extends JPanel {
   private ArrayList<ImageIcon> friendIcons = new ArrayList<ImageIcon>(); // 친구들 프로필 이미지 저장
 
   public static ArrayList<JButton> friendButtons = new ArrayList<JButton>(); // 친구들 정보 버튼 저장
+
+  private JLabel jLabel2;
 
   private final int FRIEND_PROFILE_IMG_MAX = 8;
 
@@ -49,6 +50,12 @@ public class FriendListPanel extends JPanel {
       add(userprofileButton);
       friendIcons.add(imageIcon);
       friendButtons.add(userprofileButton);
+
+      String today_talk = controller.today_talk(friends.get(index));
+      jLabel2 = new JLabel(today_talk);
+      jLabel2.setBounds(200, 115,1000, 90);
+      jLabel2.setFont(new Font("맑은 고딕", Font.BOLD, 13));
+      add(jLabel2);
     }
     for (int i = 0; i < friendNum; i++) {
       friendButtons.get(i).putClientProperty("page", i);
