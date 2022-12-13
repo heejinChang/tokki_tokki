@@ -27,6 +27,8 @@ public class SearchFriend extends JFrame implements ActionListener,  ListSelecti
     String find_email;
     JFrame jf = new JFrame();
 
+    JScrollPane aa;
+
     public Controller controller = Controller.getInstance();
 
     //친구 수를 나타내기 위해 사용
@@ -61,7 +63,7 @@ public class SearchFriend extends JFrame implements ActionListener,  ListSelecti
             JPanel jp2 = new JPanel();
             list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
             list.addListSelectionListener(this);
-            JScrollPane aa = new JScrollPane(list);
+            aa = new JScrollPane(list);
             aa.setSize(300,300);
             jp2.add(aa);
             add(jp2, BorderLayout.CENTER);

@@ -56,7 +56,13 @@ public class Controller {
     username = userDAO.findUser(userInfos);
     System.out.println(username);
 
-    if (username != null) {
+    if(userInfos.get(0).getText().length() == 0 || userInfos.get(1).getText().length() == 0)
+    {
+      ErrorMessagePanel err = new ErrorMessagePanel("<html>정보를 입력해주세요 <br> </br> 로그인 실패 </html>");
+      MainPanel.frame.change(err);
+    }
+
+    else if (username != null) {
       System.out.println("회원 정보 존재");
       IndexPanel indexPanel = new IndexPanel();
       System.out.println("인덱스 패널로 이동");
@@ -66,7 +72,7 @@ public class Controller {
       userDAO.toOn(username); //state를 1로 바꿈
 
     } else if (username == null) {
-      ErrorMessagePanel err = new ErrorMessagePanel("로그인");
+      ErrorMessagePanel err = new ErrorMessagePanel("<html>정보가 존재하지 않습니다 <br> </br> 로그인 실패 </html>");
       MainPanel.frame.change(err);
     }
   }
@@ -121,6 +127,11 @@ public class Controller {
     boolean user_state = userDAO.getState(username);
     return user_state;
   }
+  public boolean getState_for_email(String email){
+
+    boolean user_state = userDAO.getState_for_email(email);
+    return user_state;
+  }
 
   public void modifyDB(User user) {
 
@@ -142,6 +153,11 @@ public class Controller {
     //System.out.println(username);
     boolean state = userDAO.logout(username);
     System.out.println("로그아웃이 되었는가? " + state);
+  }
+
+  public void Exit()
+  {
+    userDAO.Exit();
   }
 
 }

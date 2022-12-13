@@ -46,11 +46,14 @@ public class ChatWindowPanel extends JPanel {
 
   private JButton imgFileButton;
 
+  private JButton imgPlusButton;
+
   private JTextPane jtp;
 
   private StyledDocument document;
 
   private Image img = UseImageFile.getImage("resources/folder.png");
+  private Image img2 = UseImageFile.getImage("resources/plus.png");
 
   Controller controller;
 
@@ -77,6 +80,18 @@ public class ChatWindowPanel extends JPanel {
         textArea.setText(file.toString());
       }
     });
+
+    imgPlusButton = showPlusButton();
+    add(imgPlusButton);
+    imgPlusButton.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent arg0) {
+        controller = Controller.getInstance();
+        PlusFriend plus = new PlusFriend();
+      }
+    });
+
+
     
     
     sendButton = showSendButton();
@@ -140,6 +155,16 @@ public class ChatWindowPanel extends JPanel {
     imgFileButton.setBorder(emptyBorder2);
     imgFileButton.setFocusPainted(false);
     imgFileButton.setBounds(0, 460, 60, 40);
+    return imgFileButton;
+  }
+
+  private JButton showPlusButton(){
+    JButton imgFileButton = new JButton(new ImageIcon(img2));
+    imgFileButton.setBackground(ColorSet.talkBackgroundColor);
+    Border emptyBorder2 = BorderFactory.createEmptyBorder();
+    imgFileButton.setBorder(emptyBorder2);
+    imgFileButton.setFocusPainted(false);
+    imgFileButton.setBounds(40, 460, 60, 40);
     return imgFileButton;
   }
 

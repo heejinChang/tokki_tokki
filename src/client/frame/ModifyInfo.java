@@ -30,8 +30,38 @@ public class ModifyInfo extends UserInfoPanel {
     public ModifyInfo() {
         showFormTitle("정보 수정");
         writeUserInfo();
+        showExitButton();
         showSignUpButton();
     }
+
+
+
+    public void Exit()
+    {
+        JButton exit = new JButton("회원탈퇴");
+
+        exit.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(e.getSource() == exit)
+                {
+                    Controller ab = Controller.getInstance();
+                    ab.Exit();
+                    //setVisible(false);  // -> 아애 하애짐
+                    LoginPanel loginPanel = new LoginPanel();
+                    MainPanel.frame.change(loginPanel);
+                }
+            }
+        });
+        exit.setBounds(285,65,90,30);
+        add(exit);
+    }
+
+    public void showExitButton()
+    {
+        Exit();
+    }
+
 
     // 정보 수정 폼 내용
     public void writeUserInfo() {
@@ -99,10 +129,9 @@ public class ModifyInfo extends UserInfoPanel {
 
     private void modifyinfo() {
 
-        /*System.out.println("----------------------------------------");
-        for(int i = 0; i < userInfos.size(); i++){
-          System.out.println(userInfos.get(i).getText());
-        }*/
+    /*for(int i = 0; i < userInfos.size(); i++){
+      System.out.println(i);
+    }*/
 
         user = new User(
                 userInfos.get(0).getText(), userInfos.get(1).getText(),

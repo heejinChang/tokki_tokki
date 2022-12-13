@@ -28,7 +28,7 @@ public class ClientSocket {
     Thread thread = new Thread(()->{
       try {
         socket = new Socket(); // 소켓 생성
-        socket.connect(new InetSocketAddress("localhost", 7001)); // 연결 요청
+        socket.connect(new InetSocketAddress("localhost", 7005)); // 연결 요청
         System.out.println("연결 요청");
         // -> socket 생성 및 연결 요청
       } catch (IOException e) {

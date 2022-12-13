@@ -293,6 +293,27 @@ public class UserDAO {
     return state;
   }
 
+  public boolean getState_for_email(String email){
+    //uemail은 나의 email이다.
+    connect();
+    boolean state = false;
+    String sql = "select user_state from user where user_email = ?";
+    String uname = null;
+    int i =0;
+    try {
+      pstmt = conn.prepareStatement(sql);
+      pstmt.setString(1,email);
+      ResultSet rs = pstmt.executeQuery();
+      while (rs.next()) {
+        state = (rs.getBoolean("user_state"));
+      }
+    } catch (SQLException e) {
+    }
+    disconnect();
+
+    return state;
+  }
+
   public boolean modifyDB(User user) {
     connect();
     /*
@@ -386,5 +407,35 @@ public class UserDAO {
     disconnect();
 
     return state;
+  }
+
+  public void Exit()
+  {
+    connect();
+    String sql = "Delete from user where user_email = '" + my_email +"'";
+    // String uname = null;
+    int i =0;
+    try {
+      pstmt = conn.prepareStatement(sql);
+      pstmt.executeUpdate();
+
+    } catch (SQLException e) {
+      System.out.println(e);
+    }
+    disconnect();
+
+
+    connect();
+    sql = "Delete from friend where friend_myEmail = '" + my_email +"'";
+    // String uname = null;
+    try {
+      pstmt = conn.prepareStatement(sql);
+      pstmt.executeUpdate();
+
+    } catch (SQLException e) {
+      System.out.println(e);
+    }
+    disconnect();
+
   }
 }
