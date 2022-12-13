@@ -1,63 +1,66 @@
 package client.frame;
 import controller.Controller;
+import server.userdb.User;
 import server.userdb.UserDAO;
 
 import java.awt.*;
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 import java.util.Vector;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import static java.awt.Color.RED;
 
-public class SearchFriend extends JFrame implements ActionListener{
+public class SearchFriend extends JFrame implements ActionListener,  ListSelectionListener {
     JButton btn1 = new JButton("검색");
     JButton btn2 = new JButton("추가");
-    TextField tf = new TextField("이름을 입력하세요",20);
+    TextField tf = new TextField(20);
     //친구 list 가져올때 사용
+    JList list;
     String[] found;
+    String name;
+    String find_email;
+    JFrame jf = new JFrame();
 
-    Controller controller;
+    public Controller controller = Controller.getInstance();
 
     //친구 수를 나타내기 위해 사용
     int count = 0;
     public String[] sstr;
     SearchFriend()
     {
+        super("이메일로 친구 찾기");
         JPanel jp =new JPanel();
-        setSize(400,500);
+        setSize(400,400);
+
         setLayout(new BorderLayout());
 
         Label li = new Label("search :");
         btn1.addActionListener( this);
-        btn2.addActionListener(this);
-
-
 
         //search 랑 textfiled 저장해놓음.
         jp.setLayout(new FlowLayout());
         jp.add(li);
         jp.add(tf);
         jp.add(btn1);
-        jp.add(btn2);
+        //jp.add(btn2);
         add(jp,BorderLayout.NORTH);
 
         setVisible(true);
-
     }
 
     public void friendList(int k)
     {
         if(k!= 0) {
-            JList list = new JList(found);
+            list = new JList(found);
             JPanel jp2 = new JPanel();
-            //list.setSelectionModel(ListSelectionModel.SINGLE_SELECTION);
+            list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+            list.addListSelectionListener(this);
             JScrollPane aa = new JScrollPane(list);
             aa.setSize(300,300);
             jp2.add(aa);
@@ -75,7 +78,6 @@ public class SearchFriend extends JFrame implements ActionListener{
     public void find(String text)
     {
         //add(jl);
-        controller = Controller.getInstance();
         String[] str = controller.searchUser();
         System.out.println(1);
         //str은 database로 부터 받아온 나를 제외한 사람들의 list이다.
@@ -88,14 +90,32 @@ public class SearchFriend extends JFrame implements ActionListener{
             if(str[i].contains(text))
             {
                 result[k] = str[i];
-                System.out.println(result[k]);
+                //System.out.println(result[k]);
                 k++;
             }
             i++;
         }
+
+
         found = result;
         count = k;
         friendList(k);
+
+        jf.setLayout(new FlowLayout());
+        jf.setSize(300,200);
+
+        JPanel jp = new JPanel();
+        JLabel jl = new JLabel("친구를 추가하겠습니까?");
+        jp.add(jl);
+
+        btn2.addActionListener(this);
+        jp.add(btn2);
+
+        jf.add(jp);
+    }
+    public void accept(){
+
+        jf.setVisible(true);
     }
 
     public void actionPerformed(ActionEvent e)
@@ -106,19 +126,27 @@ public class SearchFriend extends JFrame implements ActionListener{
             System.out.println("찾고자 하는 사람의 이메일: " + str);
             find(str);
         }
-        else if(e.getSource() == btn2)
-        {
-            String str = tf.getText();
 
-            Controller ct = Controller.getInstance();
-            String name = ct.username;
-            UserDAO ab = new UserDAO();
-            System.out.println("my Name :" + name + "friend Name : " + str);
-            ab.insertFriend(name, str);
-            IndexPanel indexPanel = new IndexPanel();
-            MainPanel.frame.change(indexPanel);
+        if(e.getSource() == btn2){ //추가
+            System.out.println("추가 버튼 눌림!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            name = controller.username;
+            controller.insertFriend(name, find_email);
+            System.out.println("my Name :" + name + "friend Name : " + find_email);
+            jf.setVisible(false);
         }
-
     }
 
+    boolean flag = true;
+    @Override
+    public void valueChanged(ListSelectionEvent e) {
+
+        if(flag) {
+            find_email = (String) list.getSelectedValue();
+
+            accept();
+            /*IndexPanel indexPanel = new IndexPanel();
+            MainPanel.frame.change(indexPanel);*/
+        }
+        flag = !flag;
+    }
 }

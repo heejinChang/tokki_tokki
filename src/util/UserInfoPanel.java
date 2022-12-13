@@ -22,7 +22,7 @@ public abstract class UserInfoPanel extends CommonPanel {
 
     formTitleLabel = new JLabel(text);
     formTitleLabel.setFont(new Font("맑은 고딕", Font.BOLD, 18));
-    formTitleLabel.setBounds(30, 100, 200, 50);
+    formTitleLabel.setBounds(30, 80, 170, 30);
 
     //formTitleLabel = 로그인
     add(formTitleLabel);
@@ -35,7 +35,7 @@ public abstract class UserInfoPanel extends CommonPanel {
     formButton.setFont(new Font("맑은 고딕", Font.BOLD, 14));
     formButton.setForeground(Color.WHITE);
     formButton.setBackground(ColorSet.signUpButtonColor);
-    formButton.setBounds(100, 730, 180, 40);
+    formButton.setBounds(100, 723, 180, 40);
     add(formButton);
 
     return formButton;

@@ -30,7 +30,16 @@ public class User {
     this.address = address;
     this.site_address = site_address;
   }
-                
+  public User(String password, String nickname,
+              String birth, String today_talk, String phone_num, String address, String site_address) {
+    this.password = password;
+    this.nickname = nickname;
+    this.birth = birth;
+    this.today_talk = today_talk;
+    this.phone_num = phone_num;
+    this.address = address;
+    this.site_address = site_address;
+  }
 
   public String getUname() {
 

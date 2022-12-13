@@ -35,7 +35,7 @@ public class ServerHandler {
     executorService = threadPool;
     try {
       serverSocket = new ServerSocket();
-      serverSocket.bind(new InetSocketAddress(7001));
+      serverSocket.bind(new InetSocketAddress(7005));
       System.out.println("서버 연결 기다림");
       // -> serverSocket 생성 및 포트 바인딩
     } catch (Exception e) {

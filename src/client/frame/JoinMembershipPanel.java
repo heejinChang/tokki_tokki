@@ -35,11 +35,19 @@ public class JoinMembershipPanel extends UserInfoPanel {
 
     for (CommonWord commonWord : CommonWord.values()) {
       if (commonWord.getNum() >= CommonWord.NAME.getNum()
-          && commonWord.getNum() <= CommonWord.SITE_ADDRESS.getNum()) {
-        System.out.println(commonWord.getText());
-        formTitleLabel = new JLabel(commonWord.getText());
+              && commonWord.getNum() <= CommonWord.SITE_ADDRESS.getNum()) {
+        //System.out.println(commonWord.getText());
+        if(commonWord.getText().equals("집주소")){
+          formTitleLabel = new JLabel(commonWord.getText() + "(선택)");
+        }
+        else if(commonWord.getText().equals("사이트 주소")){
+          formTitleLabel = new JLabel(commonWord.getText() + "(선택)");
+        }
+        else{
+          formTitleLabel = new JLabel(commonWord.getText());
+        }
         formTitleLabel.setFont(new Font("맑은 고딕", Font.BOLD, 14));
-        formTitleLabel.setBounds(30, y_value - 8, 200, 50);
+        formTitleLabel.setBounds(30, y_value - 2, 200, 30);
         add(formTitleLabel);
 
         if(a == 3)
@@ -48,10 +56,11 @@ public class JoinMembershipPanel extends UserInfoPanel {
         }
 
         userInfoTextField = new TextField(10);
-        userInfoTextField.setBounds(30, y_value + 35, 325, 30);
+        userInfoTextField.setBounds(30, y_value + 30, 325, 30);
         add(userInfoTextField);
         y_value += 60;
         a++;
+
 
         /* 비밀번호 입력 후 바로 enter 누르면 화면 넘어가도록. */
         if (commonWord.getNum() == CommonWord.PASSWORD.getNum()) {
@@ -93,10 +102,10 @@ public class JoinMembershipPanel extends UserInfoPanel {
     }*/
 
     user = new User(userInfos.get(0).getText(), userInfos.get(1).getText(),
-        userInfos.get(2).getText(),userInfos.get(3).getText(),
+            userInfos.get(2).getText(),userInfos.get(3).getText(),
             userInfos.get(4).getText(),userInfos.get(5).getText(),
             userInfos.get(6).getText(),userInfos.get(7).getText(),userInfos.get(8).getText());
-    
+
     Controller controller = Controller.getInstance();
     controller.insertDB(user);
   }

@@ -1,12 +1,17 @@
 package client.frame;
 
+import controller.Controller;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
 @SuppressWarnings("serial")
-public class MainFrame extends JFrame {
+public class MainFrame extends JFrame implements WindowListener {
 
   private MainPanel mainPanel;
+  Controller controller;
 
   public MainFrame() {
 
@@ -17,6 +22,7 @@ public class MainFrame extends JFrame {
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     setResizable(false);
     setVisible(true);
+    this.addWindowListener(this);
   }
 
   /*panel 바꾸기*/
@@ -25,5 +31,46 @@ public class MainFrame extends JFrame {
     getContentPane().add(panelName);
     revalidate();
     repaint();
+  }
+
+  @Override
+  public void windowOpened(WindowEvent e) {
+
+  }
+
+  @Override
+  public void windowClosing(WindowEvent e) {
+    controller = Controller.getInstance();
+    String name = controller.username;
+    System.out.println("프레임 : " + name);
+    controller.logout(name);
+  }
+
+  @Override
+  public void windowClosed(WindowEvent e) {
+    controller = Controller.getInstance();
+    String name = controller.username;
+    System.out.println("프레임 : " + name);
+    controller.logout(name);
+  }
+
+  @Override
+  public void windowIconified(WindowEvent e) {
+
+  }
+
+  @Override
+  public void windowDeiconified(WindowEvent e) {
+
+  }
+
+  @Override
+  public void windowActivated(WindowEvent e) {
+
+  }
+
+  @Override
+  public void windowDeactivated(WindowEvent e) {
+
   }
 }

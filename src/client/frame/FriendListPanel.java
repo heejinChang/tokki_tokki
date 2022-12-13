@@ -1,8 +1,7 @@
 package client.frame;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Random;
@@ -13,6 +12,8 @@ import server.datacommunication.Message;
 import util.ColorSet;
 import util.UseImageFile;
 import util.UserProfileButton;
+import java.awt.MenuItem;
+import java.awt.PopupMenu;
 
 @SuppressWarnings("serial")
 public class FriendListPanel extends JPanel {
@@ -25,6 +26,12 @@ public class FriendListPanel extends JPanel {
 
   private JLabel jLabel2;
 
+  String today_talk = null;
+
+  UserProfileButton userprofileButton;
+
+  ImageIcon imageIcon;
+
   private final int FRIEND_PROFILE_IMG_MAX = 8;
 
   private final int FRIEND_PROFILE_IMG_MIN = 1;
@@ -34,53 +41,71 @@ public class FriendListPanel extends JPanel {
     setBackground(ColorSet.talkBackgroundColor);
     Controller controller = Controller.getInstance();
     friends = controller.friendList();
+
     System.out.println("친구리스트 불러오기 성공");
     int friendNum = friends.size();
     System.out.println("친구수 : " + friendNum);
     setLayout(new GridLayout(friendNum,10));
     for (int index = 0; index < friendNum; index++) {
+      int k = index;
       Random rand = new Random();
       int randomNum =
-          rand.nextInt((FRIEND_PROFILE_IMG_MAX - FRIEND_PROFILE_IMG_MIN) + FRIEND_PROFILE_IMG_MIN)
-              + 1;
-      Image img = UseImageFile.getImage("resources/friendProfile/profile" + randomNum + ".png");
-      ImageIcon imageIcon = new ImageIcon(img);
-      UserProfileButton userprofileButton = new UserProfileButton(imageIcon);
-      userprofileButton.setText(friends.get(index));
+              rand.nextInt((FRIEND_PROFILE_IMG_MAX - FRIEND_PROFILE_IMG_MIN) + FRIEND_PROFILE_IMG_MIN)
+                      + 1;
+
+      boolean state = controller.getState(friends.get(index));
+
+
+      if(state == true){
+        Image img = UseImageFile.getImage("resources/on.png");
+        imageIcon = new ImageIcon(img);
+        userprofileButton = new UserProfileButton(imageIcon);
+        userprofileButton.setText(friends.get(index)); //이름
+      }
+      else{
+        Image img = UseImageFile.getImage("resources/off.png");
+        imageIcon = new ImageIcon(img);
+        userprofileButton = new UserProfileButton(imageIcon);
+        userprofileButton.setText(friends.get(index)); //이름
+      }
+
+      userprofileButton.addMouseListener(new MouseListener() {
+        @Override
+        public void mouseClicked(MouseEvent e) {
+          Pop popMenu = new Pop(friends, k);
+
+          popMenu.pm.show(e.getComponent(), e.getX(), e.getY());
+        }
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+
+        }
+      });
       add(userprofileButton);
       friendIcons.add(imageIcon);
       friendButtons.add(userprofileButton);
 
-      String today_talk = controller.today_talk(friends.get(index));
+      today_talk = controller.today_talk(friends.get(index));
       jLabel2 = new JLabel(today_talk);
       jLabel2.setBounds(200, 115,1000, 90);
       jLabel2.setFont(new Font("맑은 고딕", Font.BOLD, 13));
       add(jLabel2);
-    }
-    for (int i = 0; i < friendNum; i++) {
-      friendButtons.get(i).putClientProperty("page", i);
-      friendButtons.get(i).addActionListener(new ActionListener() {
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-
-          int idx = (Integer) ((JButton) e.getSource()).getClientProperty("page");
-          if (friendButtons.get(idx).getText().contains("대화 중..")) {
-            // 작동x
-          } else {
-            friendButtons.get(idx).setText(friendButtons.get(idx).getText() + "       대화 중..");
-            String messageType = "text";
-            Message message = new Message(controller.username, controller.username + "님이 입장하였습니다.",
-                LocalTime.now(), messageType, friends.get(idx));
-            ChatWindowPanel c = new ChatWindowPanel(friendIcons.get(idx), friends.get(idx));
-            new ChatWindowFrame(c, friends.get(idx));
-            IndexPanel.chatPanelName.add(c);
-            
-            Controller controller = Controller.getInstance();
-            controller.clientSocket.send(message);
-          }
-        }
-      });
     }
   }
 }

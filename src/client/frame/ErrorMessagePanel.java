@@ -21,12 +21,11 @@ public class ErrorMessagePanel extends CommonPanel {
 
     showErrorMessage(text);
     backButton = getGoBackButton(CommonWord.GOBACK.getText());
-    
+
     backButton.addActionListener(new ActionListener() {
 
       @Override
       public void actionPerformed(ActionEvent e) {
-
         if (text.equals(CommonWord.SIGN_UP_MEMBERSHIP.getText())) {
           JoinMembershipPanel memPanel = new JoinMembershipPanel();
           MainPanel.frame.change(memPanel);
@@ -34,6 +33,11 @@ public class ErrorMessagePanel extends CommonPanel {
           LoginPanel loginPanel = new LoginPanel();
           MainPanel.frame.change(loginPanel);
         }
+        else{
+          IndexPanel abc = new IndexPanel();
+          MainPanel.frame.change(abc);
+        }
+
       }
     });
   }

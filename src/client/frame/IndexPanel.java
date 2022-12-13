@@ -17,9 +17,11 @@ import util.UserProfileButton;
 
 @SuppressWarnings("serial")
 public class IndexPanel extends CommonPanel {
-
   private JLabel jLabel;
-  private JButton btn;
+  private JButton btn1;
+  private JButton btn2;
+  private JButton btn3;
+
 
   private JLabel jLabel2;
 
@@ -29,7 +31,9 @@ public class IndexPanel extends CommonPanel {
 
   public static ArrayList<ChatWindowPanel> chatPanelName = new ArrayList<ChatWindowPanel>();
 
-  public static JLabel jl = new JLabel("친구찾기");
+  public static JLabel jl = new JLabel("친구 찾기");
+
+  public static JLabel modify = new JLabel("정보 수정");
   Controller controller;
 
   public IndexPanel() {
@@ -38,8 +42,9 @@ public class IndexPanel extends CommonPanel {
     meanMyProfileTitle(CommonWord.MYPROFILE.getText());
     meanMyProfile();
 
-    meanMyProfileTitle2("친구찾기 기능");
-
+    meanMyProfileTitle2("정보 수정");
+    meanFindFriend("친구 찾기");
+    meanlogout("로그아웃");
 
     //"친구"라고 label보여주기
     meanFriendProfileTitle(CommonWord.FRIEND.getText());
@@ -48,7 +53,6 @@ public class IndexPanel extends CommonPanel {
 
     meanApiTitle(CommonWord.API.getText());
     meanApi(); // 공공데이터 api 실행하기
-
   }
 
   private void meanMyProfileTitle(String text) {
@@ -58,29 +62,96 @@ public class IndexPanel extends CommonPanel {
     jLabel.setBounds(30, 80, 200, 30);
     //jLable = 내 프로필
     add(jLabel);
+
+    ImageIcon img = new ImageIcon("resources/re4.png");
+    JButton jb = new JButton(img);
+    jb.setBounds(100,80,30, 30);
+    jb.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+
+        MainPanel.frame.change(new IndexPanel());
+      }
+    });
+    add(jb);
   }
 
   private void meanMyProfileTitle2(String text) {
-
-    btn = new JButton(text);
-    btn.setBackground(new Color(252, 255, 204));
-    btn.setFont(new Font("맑은 고딕", Font.BOLD, 14));
-    btn.setBounds(30, 50, 200, 30);
+// 정보 수정
+    btn1 = new JButton(text);
+    btn1.setBackground(new Color(252, 255, 204));
+    btn1.setFont(new Font("맑은 고딕", Font.BOLD, 14));
+    btn1.setBounds(10, 40, 122, 30);
+/*
     btn.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
-        if(btn.equals(e.getSource()))
+        if(btn.equals(e.getSource())){
+
+          System.out.println("정보 수정");
+         // new ModifyInfo();
+          ModifyInfo joinMembershipPanel = new ModifyInfo();
+          MainPanel.frame.change(joinMembershipPanel);
+        }
+      }
+    });
+ */
+
+    add(btn1);
+    btn1.addActionListener(new ActionListener() {
+
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        System.out.println("정보 수정");
+        // new ModifyInfo();
+        ModifyInfo joinMembershipPanel = new ModifyInfo();
+        MainPanel.frame.change(joinMembershipPanel);
+      }
+    });
+    // 정보 수정 버튼
+  }
+  private void meanFindFriend(String text){
+    btn2 = new JButton(text);
+    btn2.setBackground(new Color(252, 255, 204));
+    btn2.setFont(new Font("맑은 고딕", Font.BOLD, 14));
+    btn2.setBounds(130, 40, 122, 30);
+    btn2.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        if(btn2.equals(e.getSource()))
         {
-          System.out.println("검색시작");
+          System.out.println("친구 찾기");
           new SearchFriend();
         }
       }
     });
-    //btn = 친구찾기기능.
-
-    add(btn);
+    // 친구 찾기 기능
+    add(btn2);
   }
 
+  private void meanlogout(String text){
+    btn3 = new JButton(text);
+    btn3.setBackground(new Color(252, 255, 204));
+    btn3.setFont(new Font("맑은 고딕", Font.BOLD, 14));
+    btn3.setBounds(250, 40, 122, 30);
+    btn3.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        if(btn3.equals(e.getSource()))
+        {
+          controller = Controller.getInstance();
+          String username = controller.username;
+          System.out.println("로그아웃 하려는 사용자 이름: " + username);
+          controller.logout(username);
+
+          LoginPanel goto_login = new LoginPanel();
+          MainPanel.frame.change(goto_login);
+        }
+      }
+    });
+    // 친구 찾기 기능
+    add(btn3);
+  }
 
   private void meanMyProfile() {
 
@@ -88,12 +159,13 @@ public class IndexPanel extends CommonPanel {
     userProfileButton = new UserProfileButton(imageIcon);
     userProfileButton.setText(controller.username);
     System.out.println("user name = " + controller.username);
-    userProfileButton.setBounds(30, 120, 1000, 80);
+    userProfileButton.setBounds(30, 120, 180, 80);
     add(userProfileButton);
 
     String today_talk = controller.today_talk(controller.username);
     jLabel2 = new JLabel(today_talk);
-    jLabel2.setBounds(200, 115,1000, 90);
+    //System.out.println("오늘의 한마디!!!!" + today_talk);
+    jLabel2.setBounds(250, 120,1000, 80);
     jLabel2.setFont(new Font("맑은 고딕", Font.BOLD, 13));
     add(jLabel2);
 
@@ -119,6 +191,7 @@ public class IndexPanel extends CommonPanel {
     });
   }
 
+
   private void meanFriendProfileTitle(String text) {
 
     jLabel = new JLabel(text);
@@ -133,7 +206,8 @@ public class IndexPanel extends CommonPanel {
   private void showFriendList() {
 
     FriendListPanel jpanel = new FriendListPanel();
-    System.out.println("친구 리스트 패널 불러오기");
+
+    //System.out.println("친구 리스트 패널 불러오기");
     JScrollPane scroller = new JScrollPane(jpanel);
     scroller.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
     scroller.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);

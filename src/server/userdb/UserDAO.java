@@ -1,5 +1,7 @@
 package server.userdb;
 
+import controller.Controller;
+
 import java.awt.*;
 import java.sql.*;
 import java.text.SimpleDateFormat;
@@ -65,7 +67,7 @@ public class UserDAO {
   public boolean insertDB(User user) {
     connect();
     String sql = "insert into user values(?,?,?,?,?,?,?,?,?,?,?,?)";
-    
+
     boolean isInsert = false;
     try {
       SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -82,20 +84,20 @@ public class UserDAO {
       pstmt.setString(7, user.getBirth());
       pstmt.setString(8, user.getToday_talk());
       pstmt.setString(9, user.getPhone_num());
-      pstmt.setInt(10,1);
+      pstmt.setInt(10,0);
       pstmt.setString(11, user.getAddress());
       pstmt.setString(12, user.getSite_address());
       pstmt.executeUpdate();
-      
+
       isInsert = true;
- 
+
     } catch (SQLException e) {
       isInsert = false;
     }
     disconnect();
-    
+
     return isInsert;
-    
+
   }
 
   public String findUser(ArrayList<TextField> userInfos) {
@@ -105,7 +107,7 @@ public class UserDAO {
     String uemail = userInfos.get(0).getText();
     String password = userInfos.get(1).getText();
     System.out.println("로그인 하려는 이메일 = " + uemail + " 비밀번호 = " + password);
-    
+
     String uname = null;
     try {
       pstmt = conn.prepareStatement(sql);
@@ -115,16 +117,16 @@ public class UserDAO {
       while (rs.next()) {
         uname = rs.getString("user_name");
       }
-      
+
       username = uname;
 
     } catch (SQLException e) {
       e.printStackTrace();
     }
-    
+
     disconnect();
-    
-    return username; 
+
+    return username;
   }
 
   public ArrayList<String> friendList() {
@@ -192,7 +194,7 @@ public class UserDAO {
   public String[] serach() {
     //uemail은 나의 email이다.
     connect();
-    String[]str = new String[10];
+    String[]str = new String[1000];
     String sql = "select user_email from user";
     int i =0;
     try {
@@ -211,7 +213,7 @@ public class UserDAO {
   }
 
 
-  public boolean insertFriend(String me, String friend) {
+  public boolean insertFriend(String me, String friend_email) {
     connect();
 
     String sql = "select user_email from user where user_name = " + "'" + me + "'";
@@ -224,39 +226,27 @@ public class UserDAO {
       }
     } catch (SQLException e) {
     }
-    disconnect();
 
-    connect();
-    sql = "select user_email from user where user_name = " + "'" + friend + "'";
-    try {
-      pstmt = conn.prepareStatement(sql);
-      ResultSet rs = pstmt.executeQuery();
-      while (rs.next()) {
-        friend_email = (rs.getString("user_email"));
-        System.out.println(friend_email);
-      }
-    } catch (SQLException e) {
-    }
-
-    disconnect();
-
-    connect();
     sql = "insert into friend values (" + "'" + my_email +"'" + "," +"'" + friend_email + "'" + ")";
 
-    boolean isInsert = true;
+    boolean isInsert = false;
+
     try {
-      pstmt = conn.prepareStatement(sql);
-      pstmt.executeUpdate();
+
+      if(!my_email.equals(friend_email)){
+        pstmt = conn.prepareStatement(sql);
+        pstmt.executeUpdate();
+        isInsert = true;
+      }
 
     } catch (SQLException e) {
-      isInsert = false;
-      System.out.println(e);
+      //isInsert = false;
+      //System.out.println(e);
     }
 
-
     disconnect();
-    return isInsert;
 
+    return isInsert;
   }
 
   public String getTodayTalk(String username){
@@ -280,5 +270,121 @@ public class UserDAO {
     disconnect();
 
     return str;
+  }
+
+  public boolean getState(String username){
+    //uemail은 나의 email이다.
+    connect();
+    boolean state = false;
+    String sql = "select user_state from user where user_name = ?";
+    String uname = null;
+    int i =0;
+    try {
+      pstmt = conn.prepareStatement(sql);
+      pstmt.setString(1,username);
+      ResultSet rs = pstmt.executeQuery();
+      while (rs.next()) {
+        state = (rs.getBoolean("user_state"));
+      }
+    } catch (SQLException e) {
+    }
+    disconnect();
+
+    return state;
+  }
+
+  public boolean modifyDB(User user) {
+    connect();
+    /*
+    SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    Date now = new Date();
+    String nowTime1 = sdf1.format(now);
+    */
+    Controller a = Controller.getInstance();
+    String name = a.username;
+    System.out.println(name);
+
+
+    // 쿼리 수정해야됨
+    // String sql = "insert into user values(?,?,?,?,?,?,?,?,?,?,?,?)";
+    String sql = "UPDATE user SET "
+            + "user_password = '" + user.getPassword() +"' not null , "
+            + "user_createdAt = SYSDATE(),  "
+            + "user_nickname = '" + user.getNickname() +"' not null, "
+            + "user_birthday = '" + user.getBirth() +"' not null, "
+            + "user_todaytalk = '" + user.getToday_talk() +"' not null, "
+            + "user_phonenumber =  '" + user.getPhone_num() + "' not null,"
+            + "user_state = 1, "
+            + "user_address = '" + user.getAddress() +"' ,"
+            + "user_siteaddress = '" + user.getSite_address() +"' "
+            + "where user_name = '" + name + "' ";
+
+    boolean isInsert = false;
+    try {
+
+      pstmt = conn.prepareStatement(sql);
+      /*
+      pstmt.setString(1, user.getUemail());
+      pstmt.setString(2, user.getPassword());
+      pstmt.setString(3, nowTime1.toString());
+      pstmt.setString(4, user.getNickname());
+      pstmt.setString(5, user.getBirth());
+      pstmt.setString(6, user.getToday_talk());
+      pstmt.setString(7, user.getPhone_num());
+      pstmt.setInt(8,1);
+      pstmt.setString(9, user.getAddress());
+      pstmt.setString(10, user.getSite_address());
+
+       */
+      pstmt.executeUpdate();
+      isInsert = true;
+
+
+    } catch (SQLException e) {
+      System.out.println(e);
+      isInsert = false;
+    }
+    disconnect();
+
+    return isInsert;
+  }
+
+  public void toOn(String username){
+    connect();
+    boolean state = false;
+    String sql = "update user set user_state = true where user_name = ?";
+    String uname = null;
+    int i =0;
+    try {
+      pstmt = conn.prepareStatement(sql);
+      pstmt.setString(1,username);
+      pstmt.executeUpdate();
+      state = true;
+    } catch (SQLException e) {
+    }
+    disconnect();
+  }
+
+  public boolean logout(String username){
+    System.out.println("로그아웃 실행 시작: " + username);
+    connect();
+    boolean state = true;
+
+    String sql = "update user set user_state = false where user_name = '" + username +"'";
+    // String uname = null;
+    int i =0;
+    try {
+      pstmt = conn.prepareStatement(sql);
+      // pstmt.setString(1,username);
+      pstmt.executeUpdate();
+
+      state = false;
+
+    } catch (SQLException e) {
+      System.out.println(e);
+    }
+    disconnect();
+
+    return state;
   }
 }
