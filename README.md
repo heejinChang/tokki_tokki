@@ -1,7 +1,7 @@
 # tokki_tokki
 # tokki_tokki
 2022-2 네트워크 텀프로젝트 
-유투브 영상 : 네트워크 Team D - YouTube
+유투브 영상 : https://youtu.be/3PSJMC8hpqQ
 유투브 Demo video : https://www.youtube.com/watch?v=jN5mXV1q7sc&feature=youtu.be
 
 
