@@ -463,5 +463,30 @@ public class UserDAO {
     return true;
   }
 
+  public String findemail(ArrayList<TextField> userInfos) {
+
+    connect();
+    String sql = "select * from user where user_email=?";
+    String uemail = userInfos.get(0).getText();
+
+    String uname = null;
+    try {
+      pstmt = conn.prepareStatement(sql);
+      pstmt.setString(1, uemail);
+      ResultSet rs = pstmt.executeQuery();
+      while (rs.next()) {
+        uname = rs.getString("user_email");
+      }
+      username = uname;
+
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+
+    disconnect();
+
+    return username;
+  }
+
 
 }

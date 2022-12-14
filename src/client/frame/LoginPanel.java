@@ -33,7 +33,7 @@ public class LoginPanel extends UserInfoPanel {
       //System.out.println(commonWord.getText());
 
       if (commonWord.getNum() == CommonWord.EMAIL.getNum()
-          || commonWord.getNum() == CommonWord.PASSWORD.getNum()) {
+              || commonWord.getNum() == CommonWord.PASSWORD.getNum()) {
         formTitleLabel = new JLabel(commonWord.getText());
         formTitleLabel.setFont(new Font("맑은 고딕", Font.BOLD, 14));
         formTitleLabel.setBounds(30, y_value - 8, 200, 50);
@@ -79,7 +79,7 @@ public class LoginPanel extends UserInfoPanel {
       }
     });
   }
-  
+
   private void loginUser() {
     Controller controller = Controller.getInstance();
     controller.findUser(userInfos);

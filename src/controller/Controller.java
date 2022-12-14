@@ -61,26 +61,37 @@ public class Controller {
   public void findUser(ArrayList<TextField> userInfos) {
 
     username = userDAO.findUser(userInfos);
-    //System.out.println(username);
+    String email = userDAO.findemail(userInfos);
+    System.out.println(username);
 
     if(userInfos.get(0).getText().length() == 0 || userInfos.get(1).getText().length() == 0)
     {
-      ErrorMessagePanel err = new ErrorMessagePanel("<html>정보를 입력해주세요 <br> </br> 로그인 실패 </html>");
+      ErrorMessagePanel err = new ErrorMessagePanel("로그인");
       MainPanel.frame.change(err);
+      JOptionPane.showMessageDialog(null,"정보를 입력해주세요!", "회원가입", JOptionPane.WARNING_MESSAGE);
     }
 
     else if (username != null) {
-      System.out.println(username + ": 회원 정보 존재");
+      System.out.println("회원 정보 존재");
       IndexPanel indexPanel = new IndexPanel();
       System.out.println("인덱스 패널로 이동");
       MainPanel.frame.change(indexPanel);
       clientSocket.startClient();
       JOptionPane.showMessageDialog(indexPanel, "로그인 성공!!!", "로그인", JOptionPane.WARNING_MESSAGE);
       userDAO.toOn(username); //state를 1로 바꿈
+    }
 
-    } else if (username == null) {
-      ErrorMessagePanel err = new ErrorMessagePanel("<html>정보가 존재하지 않습니다 <br> </br> 로그인 실패 </html>");
+    else if(email != null)
+    {
+      ErrorMessagePanel err = new ErrorMessagePanel("로그인");
       MainPanel.frame.change(err);
+      JOptionPane.showMessageDialog(null,"비밀번호가 틀렸습니다.", "로그인", JOptionPane.WARNING_MESSAGE);
+    }
+
+    else if (username == null) {
+      ErrorMessagePanel err = new ErrorMessagePanel("로그인");
+      MainPanel.frame.change(err);
+      JOptionPane.showMessageDialog(null,"존재하지 않는 정보입니다!", "로그인", JOptionPane.WARNING_MESSAGE);
     }
   }
 
@@ -170,5 +181,6 @@ public class Controller {
   public String getUsername(String email){
     return userDAO.getUsername(email);
   }
+
 
 }
