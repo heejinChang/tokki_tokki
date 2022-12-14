@@ -123,17 +123,17 @@ public class SearchFriend extends JFrame implements ActionListener,  ListSelecti
     public void actionPerformed(ActionEvent e)
     {
         if(e.getSource()== btn1) {
-            System.out.println("검색기능");
+            // System.out.println("검색기능");
             String str = tf.getText();
-            System.out.println("찾고자 하는 사람의 이메일: " + str);
+            //  System.out.println("찾고자 하는 사람의 이메일: " + str);
             find(str);
         }
 
         if(e.getSource() == btn2){ //추가
-            System.out.println("추가 버튼 눌림!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            //  System.out.println("추가 버튼 눌림!!!!!!!!!!!!!!!!!!!!!!!!!!");
             name = controller.username;
             controller.insertFriend(name, find_email);
-            System.out.println("my Name :" + name + "friend Name : " + find_email);
+            //  System.out.println("my Name :" + name + "friend Name : " + find_email);
             jf.setVisible(false);
         }
     }

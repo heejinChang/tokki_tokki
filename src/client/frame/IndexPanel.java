@@ -25,7 +25,7 @@ public class IndexPanel extends CommonPanel {
 
   private JLabel jLabel2;
 
-  private Image img = UseImageFile.getImage("resources/woman.png");
+  private Image img = UseImageFile.getImage("resources/user.png");
 
   public static UserProfileButton userProfileButton;
 
@@ -34,6 +34,7 @@ public class IndexPanel extends CommonPanel {
   public static JLabel jl = new JLabel("친구 찾기");
 
   public static JLabel modify = new JLabel("정보 수정");
+  JScrollPane scroller;
   Controller controller;
 
   public IndexPanel() {
@@ -194,7 +195,7 @@ public class IndexPanel extends CommonPanel {
     FriendListPanel jpanel = new FriendListPanel();
 
     //System.out.println("친구 리스트 패널 불러오기");
-    JScrollPane scroller = new JScrollPane(jpanel);
+    scroller = new JScrollPane(jpanel);
     scroller.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
     scroller.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
     scroller.setBounds(30, 250, 350, 300);

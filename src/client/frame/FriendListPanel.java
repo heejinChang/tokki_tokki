@@ -36,10 +36,12 @@ public class FriendListPanel extends JPanel {
 
   private final int FRIEND_PROFILE_IMG_MIN = 1;
 
+  Controller controller;
+
   public FriendListPanel() {
 
     setBackground(ColorSet.talkBackgroundColor);
-    Controller controller = Controller.getInstance();
+    controller = Controller.getInstance();
     friends = controller.friendList();
 
     System.out.println("친구리스트 불러오기 성공");

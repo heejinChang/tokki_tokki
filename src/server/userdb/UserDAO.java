@@ -142,7 +142,6 @@ public class UserDAO {
 
     String uemail = findUserEmail();
     connect();
-    my_email = uemail;
     ArrayList<String> friends = new ArrayList<String>();
     String sql =
             "select u.user_name from user u, friend f where u.user_email = f.friend_friendEmail and f.friend_myEmail = ?";
@@ -156,6 +155,7 @@ public class UserDAO {
     } catch (SQLException e) {
     }
     disconnect();
+    System.out.println("size: " + friends.size());
     return friends;
   }
 

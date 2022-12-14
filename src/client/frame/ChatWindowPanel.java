@@ -1,4 +1,4 @@
-package client.frame; 
+package client.frame;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -11,15 +11,7 @@ import java.awt.geom.Line2D;
 import java.io.File;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.JTextPane;
-import javax.swing.ScrollPaneConstants;
+import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultStyledDocument;
@@ -83,13 +75,45 @@ public class ChatWindowPanel extends JPanel {
 
     imgPlusButton = showPlusButton();
     add(imgPlusButton);
+
+
     imgPlusButton.addActionListener(new ActionListener() {
+
       @Override
-      public void actionPerformed(ActionEvent arg0) {
-        controller = Controller.getInstance();
-        PlusFriend plus = new PlusFriend();
+      public void actionPerformed(ActionEvent e) {
+
+        Controller controller = Controller.getInstance();
+
+        String messageType = "exit";
+        int result = JOptionPane.showConfirmDialog(null, "채팅을 그만하시겠습니까?",
+                "나가기", JOptionPane.OK_CANCEL_OPTION);
+
+        if (result == JOptionPane.OK_OPTION) {
+          // '예'를 선택한 경우 즉시 대화창을 띄우며, 요청이 온 상대방에게 수락 메세지를 보낸다
+          Message message = null;
+          message = new Message(controller.username, textArea.getText(), LocalTime.now(),
+                  messageType, friendName);
+
+
+          controller.clientSocket.send(message);
+          textArea.setText("");}
+        else ;
+        //dispose();
       }
     });
+/*
+*     imgPlusButton.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent arg0) {
+        Message message = null;
+        message = new Message(controller.username, textArea.getText(), LocalTime.now(),
+                "exit", friendName);
+
+        controller.clientSocket.send(message);
+        textArea.setText("");
+      }
+    });
+* */
 
     sendButton = showSendButton();
     add(sendButton);
@@ -102,7 +126,7 @@ public class ChatWindowPanel extends JPanel {
 
         String messageType = null;
         if (textArea.getText().contains(".jpg") || textArea.getText().contains(".png")
-            || textArea.getText().contains(".JPG") || textArea.getText().contains(".PNG")) {
+                || textArea.getText().contains(".JPG") || textArea.getText().contains(".PNG")) {
           messageType = "file";
         } else {
           messageType = "text";
@@ -110,10 +134,10 @@ public class ChatWindowPanel extends JPanel {
         Message message = null;
         if (messageType.equals("file")) {
           message = new Message(controller.username, textArea.getText(), LocalTime.now(),
-              messageType, friendName);
+                  messageType, friendName);
         } else {
           message = new Message(controller.username, textArea.getText(), LocalTime.now(),
-              messageType, friendName);
+                  messageType, friendName);
         }
 
         controller.clientSocket.send(message);
@@ -199,27 +223,27 @@ public class ChatWindowPanel extends JPanel {
     add(scroller2);
   }
 
-  
+
   public static void displayComment(Message message) {
-    
+
     for (ChatWindowPanel chatName : IndexPanel.chatPanelName) {
       // 오른쪽으로 출력.
       if (userName.equals(message.getSendUserName())
-          && chatName.panelName.equals(message.getReceiveFriendName())) {
+              && chatName.panelName.equals(message.getReceiveFriendName())) {
         chatName.textPrint(message.getSendTime().format(DateTimeFormatter.ofPattern("aHH:mm"))
-            + "  <" + message.getSendUserName() + ">", AlignEnum.RIGHT);
+                + "  <" + message.getSendUserName() + ">", AlignEnum.RIGHT);
         if (message.getMessageType().equals("file")) {
           chatName.imgPrint(message.getSendComment());
         } else {
           chatName.textPrint(message.getSendComment(), AlignEnum.RIGHT);
         }
       }
-      
-      // 왼쪽으로 출력.    
+
+      // 왼쪽으로 출력.
       //!chatName.panelName.equals(message.getReceiveFriendName()) -> 나와의 채팅은 왼쪽 출력되면 안되니까.
       if (chatName.panelName.equals(message.getSendUserName()) && !chatName.panelName.equals(message.getReceiveFriendName())) {
         chatName.textPrint(message.getSendTime().format(DateTimeFormatter.ofPattern("aHH:mm"))
-            + "  <" + message.getSendUserName() + ">", AlignEnum.LEFT);
+                + "  <" + message.getSendUserName() + ">", AlignEnum.LEFT);
         if (message.getMessageType().equals("file")) {
           chatName.imgPrint(message.getSendComment());
         } else {
@@ -227,8 +251,8 @@ public class ChatWindowPanel extends JPanel {
         }
       }
     }
-    
-    
+
+
   }
 
 
@@ -251,11 +275,11 @@ public class ChatWindowPanel extends JPanel {
     try {
       document = jtp.getStyledDocument();
       SimpleAttributeSet sortMethod = new SimpleAttributeSet();
-      
+
       if(alignEnum == AlignEnum.RIGHT) {
-        StyleConstants.setAlignment(sortMethod, StyleConstants.ALIGN_RIGHT);   
+        StyleConstants.setAlignment(sortMethod, StyleConstants.ALIGN_RIGHT);
       }else if (alignEnum == AlignEnum.LEFT) {
-        StyleConstants.setAlignment(sortMethod, StyleConstants.ALIGN_LEFT);  
+        StyleConstants.setAlignment(sortMethod, StyleConstants.ALIGN_LEFT);
       }
       document.setParagraphAttributes(document.getLength(), document.getLength() + 1, sortMethod, true);
       document.insertString(document.getLength(), string + "\n", sortMethod);
