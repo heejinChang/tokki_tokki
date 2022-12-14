@@ -42,7 +42,9 @@ public class FriendListPanel extends JPanel {
 
     setBackground(ColorSet.talkBackgroundColor);
     controller = Controller.getInstance();
+    //System.out.println("FriendListPanel: " + controller.username);
     friends = controller.friendList();
+    //System.out.println("FriendListPanel2: " + controller.username);
 
     System.out.println("친구리스트 불러오기 성공");
     int friendNum = friends.size();
@@ -55,8 +57,8 @@ public class FriendListPanel extends JPanel {
               rand.nextInt((FRIEND_PROFILE_IMG_MAX - FRIEND_PROFILE_IMG_MIN) + FRIEND_PROFILE_IMG_MIN)
                       + 1;
 
-      boolean state = controller.getState(friends.get(index));
 
+      boolean state = controller.getState(friends.get(index));
 
       if(state == true){
         Image img = UseImageFile.getImage("resources/on.png");

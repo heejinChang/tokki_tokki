@@ -125,6 +125,7 @@ public class UserDAO {
       ResultSet rs = pstmt.executeQuery();
       while (rs.next()) {
         uname = rs.getString("user_name");
+        System.out.println("로그인 할 때 username : " + uname);
       }
 
       username = uname;
@@ -140,11 +141,15 @@ public class UserDAO {
 
   public ArrayList<String> friendList() {
 
+
+    System.out.println("----------------------------------- " + username);
     String uemail = findUserEmail();
+    //System.out.println("dddddddd:" + uemail);
     connect();
     ArrayList<String> friends = new ArrayList<String>();
-    String sql =
-            "select u.user_name from user u, friend f where u.user_email = f.friend_friendEmail and f.friend_myEmail = ?";
+    /*String sql =
+            "select u.user_name from user u, friend f where u.user_email = f.friend_friendEmail and f.friend_myEmail = ?";*/
+    String sql =  "select u.user_name from user u, friend f where u.user_email = f.friend_friendEmail and f.friend_myEmail = ?";
     try {
       pstmt = conn.prepareStatement(sql);
       pstmt.setString(1, uemail);
@@ -155,7 +160,7 @@ public class UserDAO {
     } catch (SQLException e) {
     }
     disconnect();
-    System.out.println("size: " + friends.size());
+    //System.out.println("size: " + friends.size());
     return friends;
   }
 
@@ -164,11 +169,12 @@ public class UserDAO {
   private String findUserEmail() {
 
     connect();
-    String sql = "select user_email from user where user_name=?";
+    String sql = "select user_email from user where user_name= ? ";
     String uemail = null;
     try {
       pstmt = conn.prepareStatement(sql);
       pstmt.setString(1, username);
+      System.out.println("fdafdadf: " + username);
       ResultSet rs = pstmt.executeQuery();
       while (rs.next()) {
         uemail = rs.getString("user_email");
@@ -273,6 +279,7 @@ public class UserDAO {
       ResultSet rs = pstmt.executeQuery();
       while (rs.next()) {
         state = (rs.getBoolean("user_state"));
+        //System.out.println(username + ": " + state);
       }
     } catch (SQLException e) {
     }
@@ -294,6 +301,7 @@ public class UserDAO {
       ResultSet rs = pstmt.executeQuery();
       while (rs.next()) {
         state = (rs.getBoolean("user_state"));
+        //System.out.println(email + ": " + state);
       }
     } catch (SQLException e) {
     }
@@ -306,7 +314,7 @@ public class UserDAO {
 
     Controller a = Controller.getInstance();
     String name = a.username;
-    //System.out.println(name);
+    System.out.println(name);
 
     if (user.getPassword().length() == 0 || user.getPhone_num().length() == 0 || user.getBirth().length() == 0 || user.getNickname().length() == 0 || user.getToday_talk().length() == 0) {
       System.out.println("입력 정보 부족");
@@ -477,7 +485,7 @@ public class UserDAO {
       while (rs.next()) {
         uname = rs.getString("user_email");
       }
-      username = uname;
+      //username = uname;
 
     } catch (SQLException e) {
       e.printStackTrace();
@@ -485,7 +493,7 @@ public class UserDAO {
 
     disconnect();
 
-    return username;
+    return uname;
   }
 
 

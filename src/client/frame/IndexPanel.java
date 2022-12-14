@@ -41,19 +41,28 @@ public class IndexPanel extends CommonPanel {
     controller = Controller.getInstance();
 
     meanMyProfileTitle(CommonWord.MYPROFILE.getText());
+    //System.out.println("1: "+ controller.username);
     meanMyProfile();
+    //System.out.println("2: "+ controller.username);
 
     meanMyProfileTitle2("정보 수정");
+    //System.out.println("3: "+ controller.username);
     meanFindFriend("친구 찾기");
+    //System.out.println("4: "+ controller.username);
     meanlogout("로그아웃");
+    //System.out.println("5: "+ controller.username);
 
     //"친구"라고 label보여주기
     meanFriendProfileTitle(CommonWord.FRIEND.getText());
+    //System.out.println("6: "+ controller.username);
     //친구 목록 보여주기
     showFriendList();
+    //System.out.println("7: "+ controller.username);
 
     meanApiTitle(CommonWord.API.getText());
+    //System.out.println("8: "+ controller.username);
     meanApi(); // 공공데이터 api 실행하기
+    //System.out.println("9: "+ controller.username);
   }
 
   private void meanMyProfileTitle(String text) {
@@ -193,6 +202,7 @@ public class IndexPanel extends CommonPanel {
   private void showFriendList() {
 
     FriendListPanel jpanel = new FriendListPanel();
+    //System.out.println("////// " + controller.username);
 
     //System.out.println("친구 리스트 패널 불러오기");
     scroller = new JScrollPane(jpanel);

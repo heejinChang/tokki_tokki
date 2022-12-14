@@ -97,7 +97,10 @@ public class Controller {
 
   public ArrayList<String> friendList() {
 
+    System.out.println("friendList:" + username);
+
     ArrayList<String> friends = new ArrayList<String>();
+
     friends = userDAO.friendList();
 
     return friends;
