@@ -107,16 +107,47 @@ public class ClientSocket {
           Message smessage = new Message(controller.username, controller.username + "님이 입장하였습니다.",
                   LocalTime.now(), "text", message.getSendUserName());
 
-          ChatWindowPanel c = new ChatWindowPanel(null, message.getSendUserName());
+          /*ChatWindowPanel c = new ChatWindowPanel(null, message.getSendUserName());
           new ChatWindowFrame(c, controller.username);
-          IndexPanel.chatPanelName.add(c);
+          IndexPanel.chatPanelName.add(c);*/
 
           controller.clientSocket.send(smessage);
         } else if (message.getMessageType().equals("reject")
                 && message.getReceiveFriendName().equals(controller.username)) {
           // 메세지 타입이 '거절'이면서, 본인에게 온 메세지일 경우
           JOptionPane.showMessageDialog(null, "상대방이 대화를 거절하였습니다");
-        }  else {
+        }
+        else if (message.getMessageType().equals("plus")
+                && message.getSendUserName().equals(controller.username)) {
+          //---------------------------------------------------------------------------------------------------
+          System.out.println(message.getSendUserName() + " 하이 " + message.getReceiveFriendName());
+
+          int result = JOptionPane.showConfirmDialog(null, message.getSendUserName() + "님과 대화하시겠습니까?",
+                  "대화 요청", JOptionPane.YES_NO_OPTION);
+
+          if (result == JOptionPane.YES_OPTION) {
+            // '예'를 선택한 경우 즉시 대화창을 띄우며, 요청이 온 상대방에게 수락 메세지를 보낸다
+            Message reply = new Message(message.getSendUserName(), "대화 수락", LocalTime.now(), "accept",
+                    message.getReceiveFriendName());
+            send(reply);
+
+            Message smessage = new Message(message.getSendUserName(), message.getReceiveFriendName() + "님이 입장하였습니다.",
+                    LocalTime.now(), "text", message.getReceiveFriendName());
+
+            ChatWindowPanel c = new ChatWindowPanel(null, message.getReceiveFriendName());
+            new ChatWindowFrame(c, message.getSendUserName());
+            IndexPanel.chatPanelName.add(c);
+
+            controller.clientSocket.send(smessage);
+
+          } else {
+            // '아니오'를 선택한 경우, 요청이 온 상대방에게 거절 메세지를 보낸다
+            Message reply = new Message(message.getReceiveFriendName(), "reject", LocalTime.now(), "reject",
+                    message.getSendUserName());
+            send(reply);
+          }
+          //---------------------------------------------------------------------------------------------------
+        } else {
           // 일반적인 대화 메세지의 경우
           if (message.getMessageType().equals("file")
                   && message.getReceiveFriendName().equals(controller.username)){

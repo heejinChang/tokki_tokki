@@ -36,17 +36,24 @@ public class Controller {
   }
 
   public void insertDB(User user) {
+    int isInsert = userDAO.insertDB(user);
 
-    boolean isInsert = userDAO.insertDB(user);
-
-    if (isInsert) {
+    if (isInsert == 1) {
+      ErrorMessagePanel errorPanel = new ErrorMessagePanel("회원가입");
+      MainPanel.frame.change(errorPanel);
+      JOptionPane.showMessageDialog(null,"회원가입 정보를 모두 입력해주세요!", "회원가입", JOptionPane.WARNING_MESSAGE);
+    } else if(isInsert == 2){
+      ErrorMessagePanel errorPanel = new ErrorMessagePanel("회원가입");
+      MainPanel.frame.change(errorPanel);
+      JOptionPane.showMessageDialog(null,"이메일이 중복되었습니다!", "회원가입", JOptionPane.WARNING_MESSAGE);
+    } else if (isInsert == 3) {
       MainPanel mainPanel = new MainPanel(MainPanel.frame);
       MainPanel.frame.change(mainPanel);
       JOptionPane.showMessageDialog(mainPanel, "회원가입 성공!!!", "회원가입", JOptionPane.WARNING_MESSAGE);
-    } else {
+    }else {
       ErrorMessagePanel errorPanel = new ErrorMessagePanel("회원가입");
       MainPanel.frame.change(errorPanel);
-      JOptionPane.showMessageDialog(null, "회원 가입 정보를 모두 입력해주세요", "회원가입", JOptionPane.WARNING_MESSAGE);
+      JOptionPane.showMessageDialog(null,"실패", "회원가입", JOptionPane.WARNING_MESSAGE);
     }
 
   }
@@ -54,7 +61,7 @@ public class Controller {
   public void findUser(ArrayList<TextField> userInfos) {
 
     username = userDAO.findUser(userInfos);
-    System.out.println(username);
+    //System.out.println(username);
 
     if(userInfos.get(0).getText().length() == 0 || userInfos.get(1).getText().length() == 0)
     {
@@ -63,7 +70,7 @@ public class Controller {
     }
 
     else if (username != null) {
-      System.out.println("회원 정보 존재");
+      System.out.println(username + ": 회원 정보 존재");
       IndexPanel indexPanel = new IndexPanel();
       System.out.println("인덱스 패널로 이동");
       MainPanel.frame.change(indexPanel);
@@ -106,7 +113,7 @@ public class Controller {
     boolean isInsert = true;
     isInsert = userDAO.insertFriend(me, friend_email);
     IndexPanel indexPanel = new IndexPanel();
-    System.out.println("컨트롤로의 인서트 프랜드= " + isInsert);
+    //System.out.println("컨트롤로의 인서트 프랜드= " + isInsert);
 
     if (isInsert == true) {
       MainPanel.frame.change(indexPanel);
@@ -138,9 +145,9 @@ public class Controller {
     boolean isModify = userDAO.modifyDB(user);
 
     if (isModify) {
-      MainPanel mainPanel = new MainPanel(MainPanel.frame);
-      MainPanel.frame.change(mainPanel);
-      JOptionPane.showMessageDialog(mainPanel, "정보 수정 성공", "정보 수정", JOptionPane.WARNING_MESSAGE);
+      IndexPanel idx_p = new IndexPanel();
+      JOptionPane.showMessageDialog(null, "정보 수정 성공", "정보 수정", JOptionPane.WARNING_MESSAGE);
+      MainPanel.frame.change(idx_p);
     } else {
       ErrorMessagePanel errorPanel = new ErrorMessagePanel("정보 수정");
       MainPanel.frame.change(errorPanel);
@@ -152,12 +159,16 @@ public class Controller {
   public void logout(String username){
     //System.out.println(username);
     boolean state = userDAO.logout(username);
-    System.out.println("로그아웃이 되었는가? " + state);
+    //System.out.println("로그아웃이 되었는가? " + state);
   }
 
   public void Exit()
   {
     userDAO.Exit();
+  }
+
+  public String getUsername(String email){
+    return userDAO.getUsername(email);
   }
 
 }

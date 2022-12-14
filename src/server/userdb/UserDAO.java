@@ -11,10 +11,6 @@ import javax.swing.JTextField;
 
 public class UserDAO {
 
-  /*private String driver = "com.mysql.cj.jdbc.Driver";
-
-  private String jdbcurl = "jdbc:mysql://localhost:3306/sbn?serverTimezone=UTC";*/
-
   private Connection conn;
 
   private PreparedStatement pstmt;
@@ -22,19 +18,6 @@ public class UserDAO {
   public String username = null;
   String my_email;
   String friend_email;
-
-  /*public void connect() {
-
-    try {
-      Class.forName(driver);
-      conn = DriverManager.getConnection(jdbcurl, "root", "1234");
-      System.out.println("연결 성공");
-    } catch (Exception e) {
-      System.out.println("연결 실패");
-
-      e.printStackTrace();
-    }
-  }*/
 
   String url = "jdbc:mysql://127.0.0.1/sbn?serverTimezone=UTC&&useSSL=false&user=root&password= 1234";
 
@@ -64,40 +47,66 @@ public class UserDAO {
     }
   }
 
-  public boolean insertDB(User user) {
-    connect();
+  public int insertDB(User user) {
+
     String sql = "insert into user values(?,?,?,?,?,?,?,?,?,?,?,?)";
 
     boolean isInsert = false;
-    try {
-      SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-      Date now = new Date();
-      String nowTime1 = sdf1.format(now);
 
-      pstmt = conn.prepareStatement(sql);
-      pstmt.setString(1, user.getUemail()); //userid
-      pstmt.setString(2, user.getUname());
-      pstmt.setString(3, user.getUemail());
-      pstmt.setString(4, user.getPassword());
-      pstmt.setString(5, nowTime1.toString());
-      pstmt.setString(6, user.getNickname());
-      pstmt.setString(7, user.getBirth());
-      pstmt.setString(8, user.getToday_talk());
-      pstmt.setString(9, user.getPhone_num());
-      pstmt.setInt(10,0);
-      pstmt.setString(11, user.getAddress());
-      pstmt.setString(12, user.getSite_address());
-      pstmt.executeUpdate();
+    if (user.getUemail().length() == 0 || user.getPassword().length() == 0 || user.getPhone_num().length() == 0
+            || user.getBirth().length() == 0 || user.getNickname().length() == 0 || user.getToday_talk().length() == 0) {
 
-      isInsert = true;
+      System.out.println("회원 가입 정보 부족");
 
-    } catch (SQLException e) {
-      isInsert = false;
+      //disconnect();
+
+      return 1;
     }
-    disconnect();
+    else{
+      if(this.duplicate(user.getUemail()) == false){
+        System.out.println("이메일 중복");
 
-    return isInsert;
+        //disconnect();
 
+        return 2;
+      }
+      else {
+        try {
+          connect();
+
+          SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+          Date now = new Date();
+          String nowTime1 = sdf1.format(now);
+
+          pstmt = conn.prepareStatement(sql);
+          pstmt.setString(1, user.getUemail()); //userid
+          pstmt.setString(2, user.getUname());
+          pstmt.setString(3, user.getUemail());
+          pstmt.setString(4, user.getPassword());
+          pstmt.setString(5, nowTime1.toString());
+          pstmt.setString(6, user.getNickname());
+          pstmt.setString(7, user.getBirth());
+          pstmt.setString(8, user.getToday_talk());
+          pstmt.setString(9, user.getPhone_num());
+          pstmt.setInt(10,0);
+          pstmt.setString(11, user.getAddress());
+          pstmt.setString(12, user.getSite_address());
+          pstmt.executeUpdate();
+
+          System.out.println("회원가입 완료됨");
+
+          return 3;
+
+        } catch (SQLException e) {
+          isInsert = false;
+        }
+      }
+
+      disconnect();
+
+      return 0;
+
+    }
   }
 
   public String findUser(ArrayList<TextField> userInfos) {
@@ -133,6 +142,7 @@ public class UserDAO {
 
     String uemail = findUserEmail();
     connect();
+    my_email = uemail;
     ArrayList<String> friends = new ArrayList<String>();
     String sql =
             "select u.user_name from user u, friend f where u.user_email = f.friend_friendEmail and f.friend_myEmail = ?";
@@ -169,28 +179,6 @@ public class UserDAO {
     return uemail;
   }
 
-  /*public String serach(String find_email) {
-    System.out.println("찾고자 하는 이메일 : " + find_email);
-    //uemail은 나의 email이다.
-    connect();
-    String str = null;
-    String sql = "select user_email from user";
-    String uname = null;
-    int i =0;
-    try {
-      pstmt = conn.prepareStatement(sql);
-      pstmt.setString(1,find_email);
-      ResultSet rs = pstmt.executeQuery();
-      while (rs.next()) {
-        str = (rs.getString("user_name"));
-        System.out.println("str[i] is = " + str);
-      }
-    } catch (SQLException e) {
-    }
-    disconnect();
-
-    return str;
-  }*/
   public String[] serach() {
     //uemail은 나의 email이다.
     connect();
@@ -222,7 +210,7 @@ public class UserDAO {
       ResultSet rs = pstmt.executeQuery();
       while (rs.next()) {
         my_email = (rs.getString("user_email"));
-        System.out.println(my_email);
+        //System.out.println(my_email);
       }
     } catch (SQLException e) {
     }
@@ -250,7 +238,7 @@ public class UserDAO {
   }
 
   public String getTodayTalk(String username){
-    System.out.println("오늘의 한마디 : " + username);
+    //System.out.println("오늘의 한마디 : " + username);
     //uemail은 나의 email이다.
     connect();
     String str = null;
@@ -263,7 +251,7 @@ public class UserDAO {
       ResultSet rs = pstmt.executeQuery();
       while (rs.next()) {
         str = (rs.getString("user_todaytalk"));
-        System.out.println("todaytalk is = " + str);
+        //System.out.println("todaytalk is = " + str);
       }
     } catch (SQLException e) {
     }
@@ -315,60 +303,48 @@ public class UserDAO {
   }
 
   public boolean modifyDB(User user) {
-    connect();
-    /*
-    SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    Date now = new Date();
-    String nowTime1 = sdf1.format(now);
-    */
+
     Controller a = Controller.getInstance();
     String name = a.username;
-    System.out.println(name);
+    //System.out.println(name);
 
+    if (user.getPassword().length() == 0 || user.getPhone_num().length() == 0 || user.getBirth().length() == 0 || user.getNickname().length() == 0 || user.getToday_talk().length() == 0) {
+      System.out.println("입력 정보 부족");
 
-    // 쿼리 수정해야됨
-    // String sql = "insert into user values(?,?,?,?,?,?,?,?,?,?,?,?)";
-    String sql = "UPDATE user SET "
-            + "user_password = '" + user.getPassword() +"' not null , "
-            + "user_createdAt = SYSDATE(),  "
-            + "user_nickname = '" + user.getNickname() +"' not null, "
-            + "user_birthday = '" + user.getBirth() +"' not null, "
-            + "user_todaytalk = '" + user.getToday_talk() +"' not null, "
-            + "user_phonenumber =  '" + user.getPhone_num() + "' not null,"
-            + "user_state = 1, "
-            + "user_address = '" + user.getAddress() +"' ,"
-            + "user_siteaddress = '" + user.getSite_address() +"' "
-            + "where user_name = '" + name + "' ";
+      return false;
 
-    boolean isInsert = false;
-    try {
+    } else
+    {
+      connect();
 
-      pstmt = conn.prepareStatement(sql);
-      /*
-      pstmt.setString(1, user.getUemail());
-      pstmt.setString(2, user.getPassword());
-      pstmt.setString(3, nowTime1.toString());
-      pstmt.setString(4, user.getNickname());
-      pstmt.setString(5, user.getBirth());
-      pstmt.setString(6, user.getToday_talk());
-      pstmt.setString(7, user.getPhone_num());
-      pstmt.setInt(8,1);
-      pstmt.setString(9, user.getAddress());
-      pstmt.setString(10, user.getSite_address());
+      String sql = "UPDATE user SET "
+              + "user_password = '" + user.getPassword() + "', "
+              + "user_createdAt = SYSDATE(),  "
+              + "user_nickname = '" + user.getNickname() + "', "
+              + "user_birthday = '" + user.getBirth() + "', "
+              + "user_todaytalk = '" + user.getToday_talk() + "', "
+              + "user_phonenumber =  '" + user.getPhone_num() + "',"
+              + "user_state = 1, "
+              + "user_address = '" + user.getAddress() + "' ,"
+              + "user_siteaddress = '" + user.getSite_address() + "' "
+              + "where user_name = '" + name + "' ";
+      try {
 
-       */
-      pstmt.executeUpdate();
-      isInsert = true;
+        pstmt = conn.prepareStatement(sql);
+        pstmt.executeUpdate();
 
+        disconnect();
 
-    } catch (SQLException e) {
-      System.out.println(e);
-      isInsert = false;
+        return true;
+
+      } catch (SQLException e) {
+        System.out.println(e);
+      }
+
+      return false;
     }
-    disconnect();
-
-    return isInsert;
   }
+
 
   public void toOn(String username){
     connect();
@@ -438,4 +414,54 @@ public class UserDAO {
     disconnect();
 
   }
+
+  public String getUsername(String email) {
+    //uemail은 나의 email이다.
+    connect();
+
+    String sql = "select user_name from user where user_email = ?";
+    String uname = null;
+    int i =0;
+    try {
+      pstmt = conn.prepareStatement(sql);
+      pstmt.setString(1,email);
+      ResultSet rs = pstmt.executeQuery();
+      while (rs.next()) {
+        uname = (rs.getString("user_name"));
+      }
+    } catch (SQLException e) {
+    }
+    disconnect();
+
+    return uname;
+  }
+
+  public boolean duplicate (String email){
+    //uemail은 나의 email이다.
+    connect();
+
+    String sql = "select user_name from user where user_email = ?";
+    String uname = null;
+    int i =0;
+    try {
+      pstmt = conn.prepareStatement(sql);
+      pstmt.setString(1,email);
+      ResultSet rs = pstmt.executeQuery();
+      while (rs.next()) {
+        uname = (rs.getString("user_name"));
+
+        disconnect();
+
+        return false;
+      }
+    } catch (SQLException e) {
+      disconnect();
+
+      return true;
+    }
+
+    return true;
+  }
+
+
 }

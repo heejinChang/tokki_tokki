@@ -34,8 +34,8 @@ public class ErrorMessagePanel extends CommonPanel {
           MainPanel.frame.change(loginPanel);
         }
         else{
-          IndexPanel abc = new IndexPanel();
-          MainPanel.frame.change(abc);
+          IndexPanel idx_p = new IndexPanel();
+          MainPanel.frame.change(idx_p);
         }
 
       }

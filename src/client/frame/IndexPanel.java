@@ -82,20 +82,6 @@ public class IndexPanel extends CommonPanel {
     btn1.setBackground(new Color(252, 255, 204));
     btn1.setFont(new Font("맑은 고딕", Font.BOLD, 14));
     btn1.setBounds(10, 40, 122, 30);
-/*
-    btn.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        if(btn.equals(e.getSource())){
-
-          System.out.println("정보 수정");
-         // new ModifyInfo();
-          ModifyInfo joinMembershipPanel = new ModifyInfo();
-          MainPanel.frame.change(joinMembershipPanel);
-        }
-      }
-    });
- */
 
     add(btn1);
     btn1.addActionListener(new ActionListener() {
@@ -104,8 +90,8 @@ public class IndexPanel extends CommonPanel {
       public void actionPerformed(ActionEvent e) {
         System.out.println("정보 수정");
         // new ModifyInfo();
-        ModifyInfo joinMembershipPanel = new ModifyInfo();
-        MainPanel.frame.change(joinMembershipPanel);
+        ModifyInfo modi = new ModifyInfo();
+        MainPanel.frame.change(modi);
       }
     });
     // 정보 수정 버튼
@@ -217,7 +203,7 @@ public class IndexPanel extends CommonPanel {
 
   // 공공데이터 대기오염정보
   private void meanApiTitle(String text) {
-    System.out.println("mean Api title :"+text);
+    //System.out.println("mean Api title :"+text);
     jLabel = new JLabel(text);
     jLabel.setFont(new Font("맑은 고딕", Font.BOLD, 15));
     jLabel.setBounds(30, 600, 200, 20);
@@ -227,7 +213,7 @@ public class IndexPanel extends CommonPanel {
   // 공공데이터
   private void meanApi() {
     String bb = client.API.xmlParsing.dustApi();
-    System.out.println("meanApi" +  bb);
+    //System.out.println("meanApi" +  bb);
     jLabel = new JLabel("<html><body><center>" + bb + "<br> <br></center></body></html>");
     jLabel.setBounds(30, 650, 600, 70);
 

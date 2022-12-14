@@ -53,6 +53,7 @@ public class Pop extends JPopupMenu {
                 else{
                     // '요청' 메세지를 보낸다
                     System.out.println("대화를 신청하는 사람 : " + controller.username);
+                    System.out.println("대화 신청을 받는 사람 : " + friends.get(k));
                     Message message = new Message(controller.username, "request", LocalTime.now(), "request",
                             friends.get(k));
 

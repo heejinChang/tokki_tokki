@@ -91,9 +91,6 @@ public class ChatWindowPanel extends JPanel {
       }
     });
 
-
-    
-    
     sendButton = showSendButton();
     add(sendButton);
     sendButton.addActionListener(new ActionListener() {

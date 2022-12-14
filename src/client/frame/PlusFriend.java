@@ -131,13 +131,21 @@ public class PlusFriend extends JFrame implements ActionListener,  ListSelection
         }
 
         if(e.getSource() == btn2){ //추가
-            //System.out.println("추가 버튼 눌림!!!!!!!!!!!!!!!!!!!!!!!!!!");
-            //name -> 추가를 실행하는 사람 , find_email -> name이 추가하려고 하는 사람
             //1. find_email이 현재 활동중인지 체크
             state_B = controller.getState_for_email(find_email);
 
+            //name -> 추가를 실행하는 사람 , find_email -> name이 추가하려고 하는 사람
             if(state_B == true){
                 //대화 요청
+                System.out.println("대화를 신청하는 사람 : " + controller.username);
+                String name = controller.getUsername(find_email);
+                System.out.println("대화 신청을 받는 사람 : " + name);
+
+                Message message = new Message(controller.username, "plus", LocalTime.now(), "plus",
+                        name);
+
+                controller.clientSocket.send(message);
+
             }
             else{
                 //경고 메세지

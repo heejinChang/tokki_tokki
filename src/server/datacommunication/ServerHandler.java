@@ -50,11 +50,14 @@ public class ServerHandler {
         while (true) {
           try {
             Socket socket = serverSocket.accept(); // 클라이언트 연결 수락, client와 통신할 socket 리
+
             System.out.println("연결 수락: " + socket.getRemoteSocketAddress() + ": "
                 + Thread.currentThread().getName());
+
             Client client = new Client(socket); // 클라이언트 객체에 저장.
             connections.add(client);
             System.out.println("연결 개수: " + connections.size());
+
           } catch (IOException e) {
             if (!serverSocket.isClosed()) { // serverSocket이 닫혀있지 않을 경우
               stopServer();

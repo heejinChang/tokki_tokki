@@ -72,7 +72,7 @@ public class ModifyInfo extends UserInfoPanel {
 
             if (commonWord.getNum() > CommonWord.EMAIL.getNum()
                     && commonWord.getNum() <= CommonWord.SITE_ADDRESS.getNum()) {
-                System.out.println(commonWord.getText());
+                //System.out.println(commonWord.getText());
 
                 //System.out.println(commonWord.getText());
                 if(commonWord.getText().equals("집주소")){
